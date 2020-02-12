@@ -1,4 +1,9 @@
-# Exploratory data analysis for Neighbourhoods in Auckland
+
+
+
+
+# Exploratory Data Analysis for Neighbourhoods in Auckland
+
 **A Capstone Project - The Battle of Neighbourhoods**
 
 ## 1 Introduction 
@@ -75,7 +80,7 @@ To generate this file, each API calling of the geocoder is waited by 1 or 2 seco
 
 
 
-## 3 Methodology for the ETA
+## 3 Methodology
 
 ### 3.1 Clustering
 
@@ -99,15 +104,9 @@ There are 74156 rows in the dataset, after cleaning there are 69507 rows.
 
 As you can see in the Fig.1, Crime data set itself does not contain coordinate data for the neighbourhood. which is required to the further clustering. In this step, `geopy` is used to get the coordinate data for each neighbourhood.
 
-![Screen Shot 2020-02-11 at 10.13.15 PM](/Users/tim/Desktop/Screenshots/Screen Shot 2020-02-11 at 10.13.15 PM.jpg)*Fig. 2:Data Sample after inserting Coordinate Data*
+![Screen Shot 2020-02-11 at 10.13.15 PM](/Users/tim/Desktop/Screenshots/Screen Shot 2020-02-11 at 10.13.15 PM.jpg)*Fig. 2: Data Sample after inserting Coordinate Data*
 
 There is one tricky step here is that it is not allowed to batch to call the Open Street Map api to geocode the location in a short period. So the API is called manually and a cached coordinate JSON file is generated in this step.
-
-##### Group by "name" to Get the Crime Count
-
-For getting the Crime Count in each neighbourhood,  
-
-
 
 #### 3.1.2 Clustering Implementation
 
@@ -126,27 +125,51 @@ df_to_cluster = df_borough.drop(['Neighborhood','CrimeCount'], 1)
 kmeans = KMeans(n_clusters=kclusters, random_state=0).fit(df_to_cluster)
 ```
 
-![image-20200211222844831](/Users/tim/Library/Application Support/typora-user-images/image-20200211222844831.png)                     Fig. 3:Data Sample after Clustering*
+##### Group by "name" to Get the Crime Count
+
+![image-20200211222844831](/Users/tim/Library/Application Support/typora-user-images/image-20200211222844831.png)                     *Fig. 3: Data Sample after Clustering*
 
 
 
-3.1.3 Data Visualisation
+## 4 Results and Data Visualisation
+
+### 4.1 Results
+
+After clustering, all data will be clustered to 10 categories.
+
+![image-20200212205913099](/Users/tim/Library/Application Support/typora-user-images/image-20200212205913099.png)*Fig. 4: Neighbourhood Crime Markers on Map*
+
+To visualise the clustering neighbourhoods more clearly, different colour are used for different category, and the markers' radius is set with normalised crime count.
+
+![image-20200212210623636](/Users/tim/Library/Application Support/typora-user-images/image-20200212210623636.png)
+
+The base radius is 4, the scaler is a number between 0 and 1. As you can see in the figure below, Crime Count in Albany is 829 and the scaler is 0.360784.
+
+![image-20200212210905998](/Users/tim/Library/Application Support/typora-user-images/image-20200212210905998.png)*Fig. 5: Data Frame with Crime Count Scaler*
+
+Other Clustering Results during Implementation
+
+Before clustering by location to 10 categories, other implementation is tried too, for example, clustering by Crime Count in each neighbourhood.
+
+![Screen Shot 2020-02-10 at 9.55.47 PM](/Users/tim/Desktop/Screenshots/Screen Shot 2020-02-10 at 9.55.47 PM.jpg)*Fig .6: Clustering Result by Crime Count*
+
+The figure above is a basic result to cluster the neighbourhoods in Auckland by Crime Count. 
 
 
 
-3.1.4 Other Clustering Results during Implementation
+### 4.2 Exploratory Data Analysis
+
+Foursqaure API is used here to get the related venues information for the neighbourhoods. 
+
+![Screen Shot 2020-02-12 at 10.43.39 PM](/Users/tim/Desktop/Screenshots/Screen Shot 2020-02-12 at 10.43.39 PM.jpg)*Fig. 7: Top Venue Categories for Neighbourhoods*
+
+![Screen Shot 2020-02-12 at 10.43.18 PM](/Users/tim/Desktop/Screenshots/Screen Shot 2020-02-12 at 10.43.18 PM.jpg)*Fig. 8: Join Clustering Data Fram and Venue Category Data Frame*
+
+In this data frame, each neighbourhood can be easily explored, for example, to explore `Auckland Central West` .
+
+![Screen Shot 2020-02-12 at 10.43.27 PM](/Users/tim/Desktop/Screenshots/Screen Shot 2020-02-12 at 10.43.27 PM.jpg)*Fig. 8: Top Venue Categories for Neighbourhood Auckland Central West*
 
 
-
-
-
-### 3.2 ETA
-
-
-
-
-
-## 4 Results
 
 
 
@@ -154,11 +177,11 @@ kmeans = KMeans(n_clusters=kclusters, random_state=0).fit(df_to_cluster)
 
 ### 5.1 Discussion
 
-
+As we can see in the Fig 4. `Auckland Central West` is the area which has the highest crime rate among all neighbourhoods in Auckland, and the most common Venue category is `Cafe`.
 
 ### 5.2 Conclusion
 
-
+For the people who want to choose a place to live, if security is the most important concern, North West Auckland is a good option, South and Central Auckland are not good options.
 
 
 
